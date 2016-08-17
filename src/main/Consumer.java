@@ -5,6 +5,7 @@
  */
 package main;
 
+import java.util.ArrayList;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -12,6 +13,7 @@ import model.Bloqueo;
 import model.CalificacionEncuentro;
 import model.Chat;
 import model.Encuentro;
+import model.Nickname;
 import model.Usuario;
 
 /**
@@ -67,36 +69,41 @@ public class Consumer {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Usuario.class);
     }
 
-    public <Encuentro> Encuentro getEncuentros(Class<Encuentro> responseType, String id_usuario) throws ClientErrorException {
+    public Encuentro[] getEncuentros(String id_usuario) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("getEncuentros/{0}", new Object[]{id_usuario}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Encuentro[].class);
     }
 
-    public <Chat> Chat getChats(Class<Chat> responseType, String id_usuario) throws ClientErrorException {
+    public Chat[] getChats(String id_usuario) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("getChats/{0}", new Object[]{id_usuario}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Chat[].class);
     }
 
     public void createChat(Chat requestEntity) throws ClientErrorException {
         webTarget.path("createChat").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON));
     }
 
-    public <Nickname> Nickname getUsuariosQueHeBloqueado(Class<Nickname> responseType) throws ClientErrorException {
+    public Bloqueo[] getBloqueos() throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("getBloqueos");
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Bloqueo[].class);
     }
-
-    public <Usuario> Usuario getUsers(Class<Usuario> responseType) throws ClientErrorException {
+    public Nickname[] getUsuariosConBloqueo(String usuario) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("getUsuarioConBloqueo/{0}", new Object[]{usuario}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Nickname[].class);
+    }
+    public Usuario[] getUsers() throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("getUsers");
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Usuario[].class);
     }
 
     public void close() {
         client.close();
     }
+
     
 }

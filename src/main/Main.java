@@ -6,6 +6,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.List;
 import model.Encuentro;
 import model.Nickname;
 
@@ -19,9 +20,13 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Consumer consumer=new Consumer();
-        System.out.println(consumer.getUserById( "rhllasag").toString());
-        System.out.println(consumer.getEncuentros(Encuentro.class, "rhllasag"));
+        Consumer consumer = new Consumer();
+        System.out.println(consumer.getUserById("rhllasag").toString());
+        Encuentro[] en = consumer.getEncuentros("@.");
+        System.err.println(en[0].getId_usuario1());
+        Nickname[] nik = consumer.getUsuariosConBloqueo("@s");
+        System.err.println(nik[2].getNickname());
+
     }
-    
+
 }
